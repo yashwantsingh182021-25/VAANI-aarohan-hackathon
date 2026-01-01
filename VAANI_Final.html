@@ -1,0 +1,3164 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VAANI – Voice-First Digital Assistant for Last-Mile Bharat</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500&display=swap">
+    <style>
+        :root {
+            /* Light Theme Variables */
+            --primary-color: #1a73e8;
+            --primary-dark: #0d47a1;
+            --secondary-color: #34a853;
+            --accent-color: #fbbc05;
+            --danger-color: #ea4335;
+            --light-bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-primary: #202124;
+            --text-secondary: #5f6368;
+            --text-light: #80868b;
+            --border-color: #dadce0;
+            --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        .dark-mode {
+            /* Dark Theme Variables */
+            --primary-color: #8ab4f8;
+            --primary-dark: #669df6;
+            --secondary-color: #81c995;
+            --accent-color: #fdd663;
+            --danger-color: #f28b82;
+            --light-bg: #202124;
+            --card-bg: #292a2d;
+            --text-primary: #e8eaed;
+            --text-secondary: #9aa0a6;
+            --text-light: #80868b;
+            --border-color: #3c4043;
+            --shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', 'Noto Sans Devanagari', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--text-primary);
+            transition: var(--transition);
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Header & Navigation */
+        header {
+            background-color: var(--card-bg);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .logo-icon {
+            color: var(--primary-color);
+            font-size: 28px;
+        }
+
+        .logo-text {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .logo-subtext {
+            font-size: 12px;
+            color: var(--text-secondary);
+            display: block;
+            line-height: 1.2;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: 5px;
+            transition: var(--transition);
+        }
+
+        .nav-link:hover {
+            background-color: rgba(26, 115, 232, 0.1);
+            color: var(--primary-color);
+        }
+
+        .nav-buttons {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* Notification Button in Top Corner */
+        .notification-top-btn {
+            position: relative;
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: var(--text-primary);
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .notification-top-btn:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: var(--danger-color);
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            background: none;
+            border: none;
+            font-size: 22px;
+            color: var(--text-primary);
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .dark-mode .theme-toggle:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Language Switcher */
+        .language-switcher {
+            position: relative;
+        }
+
+        .language-btn {
+            background: none;
+            border: 1px solid var(--border-color);
+            padding: 8px 15px;
+            border-radius: 5px;
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+        }
+
+        .language-btn:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .language-options {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            box-shadow: var(--shadow);
+            display: none;
+            min-width: 150px;
+            z-index: 100;
+        }
+
+        .language-option {
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .language-option:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .language-switcher:hover .language-options {
+            display: block;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: rgba(26, 115, 232, 0.1);
+        }
+
+        .btn-large {
+            padding: 16px 32px;
+            font-size: 18px;
+        }
+
+        .btn-icon {
+            font-size: 20px;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 60px 0;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(26, 115, 232, 0.1) 0%, rgba(52, 168, 83, 0.05) 100%);
+            border-radius: 0 0 20px 20px;
+            margin-bottom: 40px;
+        }
+
+        .hero-title {
+            font-size: 42px;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: 20px;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0 auto 30px;
+        }
+
+        .hero-features {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .feature-badge {
+            background-color: var(--card-bg);
+            padding: 10px 20px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: var(--shadow);
+        }
+
+        /* Voice Assistant Section */
+        .voice-section {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .voice-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .voice-input-container {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .voice-input {
+            flex: 1;
+            min-width: 250px;
+            padding: 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 16px;
+            background-color: var(--light-bg);
+            color: var(--text-primary);
+            transition: var(--transition);
+        }
+
+        .voice-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .voice-btn {
+            padding: 15px 25px;
+            font-size: 18px;
+            border-radius: 10px;
+        }
+
+        .voice-result {
+            background-color: var(--light-bg);
+            border-radius: 10px;
+            padding: 20px;
+            min-height: 120px;
+            border: 1px solid var(--border-color);
+        }
+
+        .voice-result-title {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: var(--text-secondary);
+        }
+
+        .voice-text {
+            font-size: 18px;
+            margin-bottom: 15px;
+            min-height: 24px;
+        }
+
+        .voice-response {
+            background-color: rgba(52, 168, 83, 0.1);
+            border-left: 4px solid var(--secondary-color);
+            padding: 15px;
+            border-radius: 0 10px 10px 0;
+            margin-top: 15px;
+        }
+
+        /* Voice Results Display */
+        .voice-results-display {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .voice-result-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .listening {
+            animation: pulse 1.5s infinite;
+            color: var(--primary-color);
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .feature-card {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 40px;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .feature-title {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .feature-desc {
+            color: var(--text-secondary);
+        }
+
+        /* Dashboard & Login */
+        .login-section, .dashboard-section {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            margin-bottom: 40px;
+            display: none;
+        }
+
+        .login-form, .dashboard-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 16px;
+            background-color: var(--light-bg);
+            color: var(--text-primary);
+            transition: var(--transition);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .login-options {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .login-option {
+            flex: 1;
+            min-width: 200px;
+            text-align: center;
+        }
+
+        .otp-container {
+            display: none;
+        }
+
+        .otp-inputs {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        .otp-input {
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            font-size: 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            background-color: var(--light-bg);
+            color: var(--text-primary);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        .user-info h3 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .user-info p {
+            color: var(--text-secondary);
+        }
+
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background-color: var(--light-bg);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* Application Tracker */
+        .applications-section {
+            margin-top: 30px;
+        }
+
+        .applications-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .application-card {
+            background-color: var(--light-bg);
+            border-radius: 10px;
+            padding: 20px;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .application-status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .status-approved {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .status-rejected {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .status-inprogress {
+            background-color: #cce5ff;
+            color: #004085;
+        }
+
+        /* Scheme Finder */
+        .scheme-finder {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            margin-bottom: 40px;
+        }
+
+        .scheme-questions {
+            margin-bottom: 30px;
+        }
+
+        .question {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .question-text {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .option-btn {
+            padding: 10px 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            background-color: var(--light-bg);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .option-btn:hover, .option-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .scheme-results {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .scheme-card {
+            background-color: var(--light-bg);
+            border-radius: 10px;
+            padding: 20px;
+            border-left: 5px solid var(--secondary-color);
+        }
+
+        .scheme-title {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        .scheme-desc {
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+        }
+
+        .scheme-details {
+            margin-top: 15px;
+        }
+
+        .detail-item {
+            margin-bottom: 8px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .detail-label {
+            font-weight: 500;
+            min-width: 120px;
+            color: var(--text-primary);
+        }
+
+        .detail-value {
+            color: var(--text-secondary);
+        }
+
+        /* Essential Services */
+        .services-section {
+            margin-bottom: 40px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .service-card {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .service-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+            color: var(--secondary-color);
+        }
+
+        /* Service Details Modal */
+        .service-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            overflow-y: auto;
+        }
+
+        .service-modal-content {
+            background-color: var(--card-bg);
+            margin: 50px auto;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .service-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .service-modal-title {
+            font-size: 24px;
+            color: var(--primary-color);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+
+        .service-content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .service-content-card {
+            background-color: var(--light-bg);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        /* Help & Guidance */
+        .help-section {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            margin-bottom: 40px;
+        }
+
+        .steps {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .step {
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .step-content h4 {
+            margin-bottom: 5px;
+            color: var(--text-primary);
+        }
+
+        .step-content p {
+            color: var(--text-secondary);
+        }
+
+        /* FAQ */
+        .faq-section {
+            background-color: var(--light-bg);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        .faq-item {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .faq-question {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-answer {
+            color: var(--text-secondary);
+            display: none;
+        }
+
+        .faq-play {
+            color: var(--primary-color);
+            cursor: pointer;
+        }
+
+        /* Admin Section */
+        .admin-section {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            margin-bottom: 40px;
+            display: none;
+        }
+
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .admin-stat {
+            background-color: var(--light-bg);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .admin-table th, .admin-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .admin-table th {
+            background-color: rgba(26, 115, 232, 0.1);
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* Notification Panel */
+        .notification-panel {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            width: 350px;
+            max-width: 90vw;
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            z-index: 1000;
+            display: none;
+        }
+
+        .notification-header {
+            padding: 15px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .notification-body {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .notification-item {
+            padding: 15px;
+            border-bottom: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+
+        .notification-item:hover {
+            background-color: rgba(0, 0, 0, 0.03);
+        }
+
+        .dark-mode .notification-item:hover {
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+
+        .notification-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--text-primary);
+        }
+
+        .notification-text {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* Privacy Message */
+        .privacy-message {
+            background-color: var(--light-bg);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 40px;
+            border-left: 5px solid var(--secondary-color);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--card-bg);
+            padding: 40px 0 20px;
+            margin-top: 60px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .footer-logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .footer-description {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .footer-links h4 {
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .hero-title {
+                font-size: 32px;
+            }
+            
+            .hero-subtitle {
+                font-size: 18px;
+            }
+            
+            .voice-input-container {
+                flex-direction: column;
+            }
+            
+            .notification-panel {
+                right: 10px;
+                left: 10px;
+                width: auto;
+            }
+            
+            .section-title {
+                font-size: 24px;
+            }
+            
+            .service-modal-content {
+                margin: 20px auto;
+                padding: 20px;
+                width: 95%;
+            }
+        }
+
+        /* Utility Classes */
+        .hidden {
+            display: none !important;
+        }
+
+        .visible {
+            display: block !important;
+        }
+
+        .active {
+            display: block !important;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-20 {
+            margin-top: 20px;
+        }
+
+        .mb-20 {
+            margin-bottom: 20px;
+        }
+
+        .p-20 {
+            padding: 20px;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top: 4px solid var(--primary-color);
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header & Navigation -->
+    <header>
+        <div class="container nav-container">
+            <a href="#home" class="logo" id="logoLink">
+                <i class="fas fa-microphone-alt logo-icon"></i>
+                <div>
+                    <div class="logo-text">VAANI</div>
+                    <div class="logo-subtext">Voice-First Digital Assistant for Last-Mile Bharat</div>
+                </div>
+            </a>
+            
+            <div class="nav-links">
+                <a href="#home" class="nav-link active" data-section="home" data-en="Home" data-hi="होम">Home</a>
+                <a href="#voice" class="nav-link" data-section="voice" data-en="Voice Assistant" data-hi="वॉइस सहायक">Voice Assistant</a>
+                <a href="#schemes" class="nav-link" data-section="schemes" data-en="Scheme Finder" data-hi="योजना खोजक">Scheme Finder</a>
+                <a href="#services" class="nav-link" data-section="services" data-en="Essential Services" data-hi="आवश्यक सेवाएं">Essential Services</a>
+                <a href="#help" class="nav-link" data-section="help" data-en="Help & Guidance" data-hi="सहायता एवं मार्गदर्शन">Help & Guidance</a>
+                <a href="#admin" class="nav-link" data-section="admin" data-en="Admin" data-hi="व्यवस्थापक">Admin</a>
+            </div>
+            
+            <div class="nav-buttons">
+                <button class="notification-top-btn" id="notificationTopBtn">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge" id="notificationBadge">3</span>
+                </button>
+                
+                <div class="language-switcher">
+                    <button class="language-btn" id="languageBtn">
+                        <i class="fas fa-globe"></i>
+                        <span id="currentLanguage">English</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="language-options">
+                        <div class="language-option" data-lang="en">English</div>
+                        <div class="language-option" data-lang="hi">हिंदी (Hindi)</div>
+                    </div>
+                </div>
+                
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+                
+                <button class="btn btn-outline" id="loginBtn">Login</button>
+                <button class="btn btn-primary" id="signupBtn">Sign Up</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Notification Panel -->
+    <div class="notification-panel" id="notificationPanel">
+        <div class="notification-header">
+            <h3>Notifications</h3>
+            <button class="btn btn-outline" id="closeNotifications">Close</button>
+        </div>
+        <div class="notification-body" id="notificationBody">
+            <!-- Notifications will be added here dynamically -->
+        </div>
+    </div>
+
+    <!-- Service Details Modal -->
+    <div class="service-modal" id="serviceModal">
+        <div class="service-modal-content">
+            <div class="service-modal-header">
+                <h2 class="service-modal-title" id="serviceModalTitle">Service Details</h2>
+                <button class="close-modal" id="closeServiceModal">&times;</button>
+            </div>
+            <div id="serviceModalContent">
+                <!-- Service content will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero" id="home">
+            <h1 class="hero-title">Digital Bharat for the Last Mile</h1>
+            <p class="hero-subtitle">Inclusive, Multilingual, Low-Bandwidth Digital Access for Rural India</p>
+            
+            <div class="hero-features">
+                <div class="feature-badge">
+                    <i class="fas fa-microphone"></i>
+                    <span>Voice-First Interface</span>
+                </div>
+                <div class="feature-badge">
+                    <i class="fas fa-language"></i>
+                    <span>Multilingual Support</span>
+                </div>
+                <div class="feature-badge">
+                    <i class="fas fa-bolt"></i>
+                    <span>Low-Bandwidth Design</span>
+                </div>
+                <div class="feature-badge">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Secure & Private</span>
+                </div>
+            </div>
+            
+            <div class="mt-20">
+                <button class="btn btn-primary btn-large" id="startVoiceBtn">
+                    <i class="fas fa-microphone btn-icon"></i>
+                    Start Speaking with VAANI
+                </button>
+            </div>
+        </section>
+
+        <!-- Voice Assistant Section -->
+        <section class="voice-section" id="voice">
+            <h2 class="section-title">
+                <i class="fas fa-microphone-alt"></i>
+                Voice Assistant
+            </h2>
+            
+            <div class="voice-container">
+                <div class="voice-input-container">
+                    <input type="text" class="voice-input" id="voiceInput" placeholder="Type your query or click the microphone to speak...">
+                    <button class="btn btn-primary voice-btn" id="voiceBtn">
+                        <i class="fas fa-microphone"></i>
+                        Speak
+                    </button>
+                    <button class="btn btn-secondary voice-btn" id="readBtn">
+                        <i class="fas fa-volume-up"></i>
+                        Read Response
+                    </button>
+                </div>
+                
+                <div class="voice-result">
+                    <div class="voice-result-title">Your Query:</div>
+                    <div class="voice-text" id="voiceText">Waiting for your input...</div>
+                    
+                    <div class="voice-response" id="voiceResponse">
+                        <div class="voice-result-title">VAANI Response:</div>
+                        <div id="responseText">Hello! I'm VAANI, your voice assistant. How can I help you today?</div>
+                    </div>
+                </div>
+                
+                <!-- Voice Results Display -->
+                <div class="voice-results-display" id="voiceResultsDisplay">
+                    <!-- Dynamic results will appear here -->
+                </div>
+                
+                <div class="text-center">
+                    <p class="text-light">Try saying: "What government schemes am I eligible for?" or "Find healthcare services near me" or "Show me pension schemes"</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Login Section -->
+        <section class="login-section" id="loginSection">
+            <div class="login-form">
+                <h2 class="section-title">
+                    <i class="fas fa-user-circle"></i>
+                    Login to VAANI
+                </h2>
+                
+                <div class="login-options">
+                    <div class="login-option">
+                        <button class="btn btn-outline btn-large" id="mobileLoginBtn">
+                            <i class="fas fa-mobile-alt"></i>
+                            Mobile OTP Login
+                        </button>
+                    </div>
+                    <div class="login-option">
+                        <button class="btn btn-outline btn-large" id="emailLoginBtn">
+                            <i class="fas fa-envelope"></i>
+                            Email Login
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Mobile OTP Form -->
+                <div class="otp-container" id="mobileForm">
+                    <div class="form-group">
+                        <label class="form-label">Mobile Number</label>
+                        <input type="tel" class="form-input" id="mobileNumber" placeholder="Enter 10-digit mobile number">
+                    </div>
+                    
+                    <div class="otp-inputs" id="otpInputs">
+                        <input type="text" class="otp-input" maxlength="1" id="otp1">
+                        <input type="text" class="otp-input" maxlength="1" id="otp2">
+                        <input type="text" class="otp-input" maxlength="1" id="otp3">
+                        <input type="text" class="otp-input" maxlength="1" id="otp4">
+                        <input type="text" class="otp-input" maxlength="1" id="otp5">
+                        <input type="text" class="otp-input" maxlength="1" id="otp6">
+                    </div>
+                    
+                    <div class="form-group">
+                        <button class="btn btn-primary" id="sendOtpBtn">Send OTP</button>
+                        <button class="btn btn-secondary" id="verifyOtpBtn">Verify OTP</button>
+                    </div>
+                </div>
+                
+                <!-- Email Form -->
+                <div class="otp-container" id="emailForm">
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" class="form-input" id="email" placeholder="Enter your email">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-input" id="password" placeholder="Enter your password">
+                    </div>
+                    
+                    <div class="form-group">
+                        <button class="btn btn-primary" id="emailLoginSubmitBtn">Login</button>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-20">
+                    <p>Don't have an account? <a href="#" id="showSignup">Sign up here</a></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard Section -->
+        <section class="dashboard-section" id="dashboardSection">
+            <div class="dashboard-content">
+                <div class="user-profile">
+                    <div class="avatar" id="userAvatar">U</div>
+                    <div class="user-info">
+                        <h3 id="userName">User Name</h3>
+                        <p id="userLocation">Location: Not specified</p>
+                        <p id="userStatus">Status: Active</p>
+                    </div>
+                </div>
+                
+                <div class="dashboard-stats">
+                    <div class="stat-card">
+                        <div class="stat-value" id="schemeCount">0</div>
+                        <div class="stat-label">Eligible Schemes</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="voiceQueries">0</div>
+                        <div class="stat-label">Voice Queries</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="servicesUsed">0</div>
+                        <div class="stat-label">Services Used</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="appliedSchemes">0</div>
+                        <div class="stat-label">Applied Schemes</div>
+                    </div>
+                </div>
+                
+                <!-- Application Tracker Section -->
+                <div class="applications-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-clipboard-list"></i>
+                        Scheme Applications Tracker
+                    </h3>
+                    
+                    <div class="applications-grid" id="applicationsGrid">
+                        <!-- Applications will be loaded here -->
+                    </div>
+                    
+                    <div class="text-center mt-20">
+                        <button class="btn btn-outline" id="viewAllApplications">
+                            <i class="fas fa-eye"></i>
+                            View All Applications
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Applied Schemes Section -->
+                <div class="applications-section mt-20">
+                    <h3 class="section-title">
+                        <i class="fas fa-file-alt"></i>
+                        Applied Schemes
+                    </h3>
+                    
+                    <div class="scheme-results" id="appliedSchemesGrid">
+                        <!-- Applied schemes will be loaded here -->
+                    </div>
+                </div>
+                
+                <div class="text-center mt-20">
+                    <button class="btn btn-outline" id="logoutBtn">Logout</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Scheme Finder Section -->
+        <section class="scheme-finder" id="schemes">
+            <h2 class="section-title">
+                <i class="fas fa-search"></i>
+                Government Scheme Finder
+            </h2>
+            
+            <div class="scheme-questions" id="schemeQuestions">
+                <div class="question">
+                    <div class="question-text">What is your age group?</div>
+                    <div class="options">
+                        <button class="option-btn" data-question="age" data-answer="below18">Below 18</button>
+                        <button class="option-btn" data-question="age" data-answer="18-40">18-40 years</button>
+                        <button class="option-btn" data-question="age" data-answer="40-60">40-60 years</button>
+                        <button class="option-btn" data-question="age" data-answer="above60">Above 60</button>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">What is your occupation?</div>
+                    <div class="options">
+                        <button class="option-btn" data-question="occupation" data-answer="farmer">Farmer</button>
+                        <button class="option-btn" data-question="occupation" data-answer="laborer">Daily Wage Laborer</button>
+                        <button class="option-btn" data-question="occupation" data-answer="student">Student</button>
+                        <button class="option-btn" data-question="occupation" data-answer="housewife">Housewife</button>
+                        <button class="option-btn" data-question="occupation" data-answer="other">Other</button>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">What is your annual family income?</div>
+                    <div class="options">
+                        <button class="option-btn" data-question="income" data-answer="below1">Below ₹1 Lakh</button>
+                        <button class="option-btn" data-question="income" data-answer="1-3">₹1-3 Lakhs</button>
+                        <button class="option-btn" data-question="income" data-answer="3-5">₹3-5 Lakhs</button>
+                        <button class="option-btn" data-question="income" data-answer="above5">Above ₹5 Lakhs</button>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">What type of assistance are you looking for?</div>
+                    <div class="options">
+                        <button class="option-btn" data-question="assistance" data-answer="financial">Financial Support</button>
+                        <button class="option-btn" data-question="assistance" data-answer="education">Education/Scholarship</button>
+                        <button class="option-btn" data-question="assistance" data-answer="healthcare">Healthcare</button>
+                        <button class="option-btn" data-question="assistance" data-answer="housing">Housing</button>
+                        <button class="option-btn" data-question="assistance" data-answer="employment">Employment</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <button class="btn btn-primary btn-large" id="findSchemesBtn">
+                    <i class="fas fa-search"></i>
+                    Find Eligible Schemes
+                </button>
+            </div>
+            
+            <div class="scheme-results mt-20" id="schemeResults">
+                <!-- Scheme results will appear here -->
+            </div>
+        </section>
+
+        <!-- Essential Services Section -->
+        <section class="services-section" id="services">
+            <h2 class="section-title">
+                <i class="fas fa-hands-helping"></i>
+                Essential Services
+            </h2>
+            
+            <div class="services-grid">
+                <div class="service-card" data-service="healthcare">
+                    <i class="fas fa-heartbeat service-icon"></i>
+                    <h3 class="feature-title">Healthcare Assistance</h3>
+                    <p class="feature-desc">Find nearby health centers, symptom guidance, and telemedicine options.</p>
+                    <button class="btn btn-outline mt-20 view-service-details">
+                        <i class="fas fa-info-circle"></i>
+                        View Healthcare Services
+                    </button>
+                </div>
+                
+                <div class="service-card" data-service="ration">
+                    <i class="fas fa-utensils service-icon"></i>
+                    <h3 class="feature-title">Ration & Food Distribution</h3>
+                    <p class="feature-desc">Locate ration shops, check eligibility, and get food security information.</p>
+                    <button class="btn btn-outline mt-20 view-service-details">
+                        <i class="fas fa-info-circle"></i>
+                        View Ration Services
+                    </button>
+                </div>
+                
+                <div class="service-card" data-service="pension">
+                    <i class="fas fa-hand-holding-usd service-icon"></i>
+                    <h3 class="feature-title">Pension & Welfare</h3>
+                    <p class="feature-desc">Information on old age, widow, and disability pensions and how to apply.</p>
+                    <button class="btn btn-outline mt-20 view-service-details">
+                        <i class="fas fa-info-circle"></i>
+                        View Pension Services
+                    </button>
+                </div>
+                
+                <div class="service-card" data-service="education">
+                    <i class="fas fa-graduation-cap service-icon"></i>
+                    <h3 class="feature-title">Education & Scholarships</h3>
+                    <p class="feature-desc">Find scholarships, educational programs, and skill development courses.</p>
+                    <button class="btn btn-outline mt-20 view-service-details">
+                        <i class="fas fa-info-circle"></i>
+                        View Education Services
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Help & Guidance Section -->
+        <section class="help-section" id="help">
+            <h2 class="section-title">
+                <i class="fas fa-question-circle"></i>
+                Help & Guidance
+            </h2>
+            
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>Speak or Type Your Query</h4>
+                        <p>Use the microphone button to speak in your preferred language or type your question.</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Get Personalized Assistance</h4>
+                        <p>VAANI will understand your needs and provide relevant information and services.</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>Access Government Services</h4>
+                        <p>Find eligible schemes, essential services, and step-by-step application guidance.</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h4>Get Voice & Text Support</h4>
+                        <p>Listen to responses in your language or read them on screen with simple instructions.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="faq-section">
+                <h3 class="section-title">Frequently Asked Questions</h3>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>How do I use VAANI without internet?</span>
+                        <i class="fas fa-volume-up faq-play" data-question="1"></i>
+                    </div>
+                    <div class="faq-answer">
+                        VAANI works with minimal internet. Basic features are available offline, and we use low-bandwidth technology to ensure accessibility even with poor connectivity.
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Is my personal data safe with VAANI?</span>
+                        <i class="fas fa-volume-up faq-play" data-question="2"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Yes, we follow strict privacy guidelines. We collect minimal data and never share it without your consent. All data is encrypted and stored securely.
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Can I use VAANI in my local language?</span>
+                        <i class="fas fa-volume-up faq-play" data-question="3"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Currently, VAANI supports Hindi and English. We are working to add more Indian languages soon, including Tamil, Telugu, Marathi, Bengali, and Gujarati.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Admin Section -->
+        <section class="admin-section" id="admin">
+            <h2 class="section-title">
+                <i class="fas fa-user-shield"></i>
+                Admin Dashboard
+            </h2>
+            
+            <div class="admin-stats">
+                <div class="admin-stat">
+                    <h3>Total Users</h3>
+                    <div class="stat-value">1,247</div>
+                </div>
+                
+                <div class="admin-stat">
+                    <h3>Voice Queries Today</h3>
+                    <div class="stat-value">342</div>
+                </div>
+                
+                <div class="admin-stat">
+                    <h3>Schemes Accessed</h3>
+                    <div class="stat-value">893</div>
+                </div>
+                
+                <div class="admin-stat">
+                    <h3>Active Sessions</h3>
+                    <div class="stat-value">56</div>
+                </div>
+            </div>
+            
+            <h3 class="section-title">User Management</h3>
+            
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>User ID</th>
+                        <th>Name</th>
+                        <th>Location</th>
+                        <th>Last Active</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="adminUserTable">
+                    <!-- User data will be loaded here -->
+                </tbody>
+            </table>
+            
+            <div class="text-center mt-20">
+                <button class="btn btn-primary" id="refreshAdminData">
+                    <i class="fas fa-sync-alt"></i>
+                    Refresh Data
+                </button>
+                <button class="btn btn-outline" id="logoutAdminBtn">Logout Admin</button>
+            </div>
+        </section>
+
+        <!-- Privacy Message -->
+        <div class="privacy-message">
+            <h3 class="section-title">
+                <i class="fas fa-shield-alt"></i>
+                Your Privacy & Security
+            </h3>
+            <p>VAANI is designed with privacy-first principles. We collect only essential information to provide you with personalized services. Your voice data is processed locally when possible and never stored without your consent. We use encryption to protect all your information.</p>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div>
+                    <div class="footer-logo">VAANI</div>
+                    <p class="footer-description">Voice-First Digital Assistant for Last-Mile Bharat - Bringing digital access to rural India through inclusive, multilingual, low-bandwidth technology.</p>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#voice">Voice Assistant</a></li>
+                        <li><a href="#schemes">Scheme Finder</a></li>
+                        <li><a href="#services">Essential Services</a></li>
+                        <li><a href="#help">Help & Guidance</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> Toll-Free: 1800-123-4567</li>
+                        <li><i class="fas fa-envelope"></i> support@vaani.gov.in</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Digital India Office, New Delhi</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>© 2023 VAANI - Voice-First Digital Assistant for Last-Mile Bharat. A Digital India Initiative.</p>
+                <p>Designed for inclusive access with support for low-bandwidth networks and multilingual voice interaction.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Global variables
+        let currentLanguage = 'en';
+        let isDarkMode = false;
+        let isListening = false;
+        let recognition = null;
+        let speechSynthesis = window.speechSynthesis;
+        let userData = null;
+        let isLoggedIn = false;
+        let isAdminLoggedIn = false;
+        let userAnswers = {};
+        let notifications = [
+            { id: 1, title: "New Scheme Added", text: "PM-KISAN scheme updated with new benefits", time: "2 hours ago", read: false },
+            { id: 2, title: "Voice Feature Improved", text: "Hindi voice recognition accuracy improved by 15%", time: "1 day ago", read: false },
+            { id: 3, title: "Application Status Update", text: "Your PM Awas Yojana application is under review", time: "3 days ago", read: true }
+        ];
+
+        // User applications data
+        let userApplications = [
+            {
+                id: 1,
+                schemeId: 1,
+                schemeName: "PM-KISAN Scheme",
+                appliedDate: "2023-10-15",
+                status: "inprogress",
+                lastUpdate: "2023-10-20",
+                documents: ["Aadhaar Card", "Land Papers"],
+                trackingId: "PMK20231015001"
+            },
+            {
+                id: 2,
+                schemeId: 2,
+                schemeName: "Ayushman Bharat Yojana",
+                appliedDate: "2023-09-28",
+                status: "approved",
+                lastUpdate: "2023-10-10",
+                documents: ["Aadhaar Card", "Income Certificate"],
+                trackingId: "ABY20230928042"
+            },
+            {
+                id: 3,
+                schemeId: 3,
+                schemeName: "PM Awas Yojana",
+                appliedDate: "2023-08-10",
+                status: "pending",
+                lastUpdate: "2023-09-15",
+                documents: ["Aadhaar Card", "Land Documents"],
+                trackingId: "PAY20230810033"
+            }
+        ];
+
+        // Applied schemes data
+        let appliedSchemes = [
+            {
+                id: 1,
+                name: "PM-KISAN Scheme",
+                appliedDate: "2023-10-15",
+                status: "In Progress",
+                amount: "₹6,000/year",
+                nextStep: "Document verification"
+            },
+            {
+                id: 2,
+                name: "Ayushman Bharat Yojana",
+                appliedDate: "2023-09-28",
+                status: "Approved",
+                amount: "₹5 Lakh/year",
+                nextStep: "Collect golden card"
+            }
+        ];
+
+        // Service content data
+        const serviceContent = {
+            healthcare: {
+                title: "Healthcare Assistance Services",
+                content: `
+                    <h3>Available Healthcare Services</h3>
+                    <div class="service-content-grid">
+                        <div class="service-content-card">
+                            <h4><i class="fas fa-hospital"></i> Nearby Health Centers</h4>
+                            <p>Find government hospitals, primary health centers, and clinics near you.</p>
+                            <ul>
+                                <li>District Hospital: 5km away</li>
+                                <li>Primary Health Center: 2km away</li>
+                                <li>Community Health Center: 8km away</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="service-content-card">
+                            <h4><i class="fas fa-stethoscope"></i> Telemedicine Services</h4>
+                            <p>Connect with doctors online for medical consultations.</p>
+                            <ul>
+                                <li>24/7 Doctor Consultation</li>
+                                <li>Free for Ayushman Bharat beneficiaries</li>
+                                <li>Prescription delivery to home</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="service-content-card">
+                            <h4><i class="fas fa-pills"></i> Medicine Availability</h4>
+                            <p>Check medicine stock at nearby government pharmacies.</p>
+                            <ul>
+                                <li>Jan Aushadhi Centers</li>
+                                <li>Subsidized medicines</li>
+                                <li>Essential drug availability</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="service-content-card">
+                            <h4><i class="fas fa-ambulance"></i> Emergency Services</h4>
+                            <p>Emergency contact numbers and ambulance services.</p>
+                            <ul>
+                                <li>Emergency: 108</li>
+                                <li>Ambulance within 15 minutes</li>
+                                <li>Free for BPL families</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-20">
+                        <h4>How to Access Services:</h4>
+                        <ol>
+                            <li>Visit nearest health center with Aadhaar card</li>
+                            <li>For telemedicine, call 104 or use the mobile app</li>
+                            <li>For emergencies, dial 108 immediately</li>
+                            <li>Check medicine availability at Jan Aushadhi centers</li>
+                        </ol>
+                    </div>
+                `
+            },
+            ration: {
+                title: "Ration & Food Distribution Services",
+                content: `
+                    <h3>Food Security Services</h3>
+                    <div class="service-content-grid">
+                        <div class="service-content-card">
+                            <h4><i class="fas fa-store"></i> Nearby Ration Shops</h4>
+                            <p>Find fair price shops and PDS outlets near you.</p>
+                            <ul>
+                                <li>Fair Price Shop: 1km away</li>
+                                <li>PDS Center: 3km away</li>
+                                <li>Mobile ration van: Every Tuesday</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="service-content-card">
+                            <h4><i class="fas fa-wheat-awn"></i> Monthly Ration Entitlement</h4>
+                            <p>Check your monthly ration allocation under NFSA.</p>
+                            <ul>
+                                <li>Rice: 5kg per person</li>
+                                <li>Wheat: 5kg per person</li>
+                                <li>Sugar: 1kg per family</li>
+                                <li>Kerosene: 3 liters (where applicable)</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="service-content-card">
+                            <h4><i class="fas fa-clipboard-check"></i> Eligibility & Documents</h4>
+                            <p>Check eligibility and required documents for ration card.</p>
+                            <ul>
+                                <li>Aadhaar card mandatory</li>
+                                <li>Income certificate for APL/BPL</li>
+                                <li>Address proof</li>
+                                <li>Family member details</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="service-content-card">
+                            <h4><i class="fas fa-calendar-check"></i> Distribution Schedule</h4>
+                            <p>Monthly ration distribution dates and timings.</p>
+                            <ul>
+                                <li>1st to 7th of every month: Priority households</li>
+                                <li>8th to 14th: Antyodaya card holders</li>
+                                <li>15th to 21st: BPL families</li>
+                                <li>22nd to 28th: APL families</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-20">
+                        <h4>How to Apply for Ration Card:</h4>
+                        <ol>
+                            <li>Visit nearest Common Service Center (CSC)</li>
+                            <li>Submit Aadhaar and income certificate</li>
+                            <li>Get temporary receipt</li>
+                            <li>Collect ration card in 15 days</li>
+                        </ol>
+                    </div>
+                `
+            },
+            pension: {
+                title: "Pension & Welfare Services",
+                content: `
+                    <h3>Social Security Pension Schemes</h3>
+                    <div class="service-content-grid">
+                        <div class="service-content-card">
+                            <h4><i class="fas fa-user-clock"></i> Old Age Pension</h4>
+                            <p>For senior citizens above 60 years of age.</p>
+                            <ul>
+                                <li>Monthly pension: ₹300-₹1000</li>
+                                <li>Age: 60+ for state, 65+ for central</li>
+                                <li>BPL families only</li>
+                                <li>Direct bank transfer</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="service-content-card">
+                            <h4><i class="fas fa-female"></i> Widow Pension</h4>
+                            <p>Financial support for widows above 18 years.</p>
+                            <ul>
+                                <li>Monthly pension: ₹300-₹1000</li>
+                                <li>Age: 18+ years</li>
+                                <li>Annual income less than ₹2 lakh</li>
+                                <li>No remarriage</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="service-content-card">
+                            <h4><i class="fas fa-wheelchair"></i> Disability Pension</h4>
+                            <p>Support for persons with disabilities (40%+ disability).</p>
+                            <ul>
+                                <li>Monthly pension: ₹300-₹1000</li>
+                                <li>Disability certificate required</li>
+                                <li>Age: 18+ years</li>
+                                <li>BPL families only</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="service-content-card">
+                            <h4><i class="fas fa-hands-helping"></i> National Social Assistance</h4>
+                            <p>Central government pension schemes.</p>
+                            <ul>
+                                <li>IGNOAPS: ₹200-500/month</li>
+                                <li>IGNWPS: ₹300/month</li>
+                                <li>IGNDPS: ₹300/month</li>
+                                <li>Application at block office</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-20">
+                        <h4>How to Apply for Pension:</h4>
+                        <ol>
+                            <li>Collect form from block development office</li>
+                            <li>Submit with age proof and BPL certificate</li>
+                            <li>For disability pension: disability certificate</li>
+                            <li>For widow pension: husband's death certificate</li>
+                            <li>Bank account details mandatory</li>
+                        </ol>
+                    </div>
+                `
+            },
+            education: {
+                title: "Education & Scholarship Services",
+                content: `
+                    <h3>Educational Support Schemes</h3>
+                    <div class="service-content-grid">
+                        <div class="service-content-card">
+                            <h4><i class="fas fa-graduation-cap"></i> Pre-Matric Scholarship</h4>
+                            <p>For students studying in classes 1 to 10.</p>
+                            <ul>
+                                <li>SC/ST/OBC/Minority students</li>
+                                <li>Family income less than ₹2.5 lakh</li>
+                                <li>Admission fee reimbursement</li>
+                                <li>Maintenance allowance</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="service-content-card">
+                            <h4><i class="fas fa-user-graduate"></i> Post-Matric Scholarship</h4>
+                            <p>For students in classes 11, 12, and higher education.</p>
+                            <ul>
+                                <li>Tuition fee reimbursement</li>
+                                <li>Maintenance allowance</li>
+                                <li>Book bank facility</li>
+                                <li>SC/ST/OBC students</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="service-content-card">
+                            <h4><i class="fas fa-laptop"></i> Digital Education</h4>
+                            <p>Free digital learning resources and devices.</p>
+                            <ul>
+                                <li>Free tablets for meritorious students</li>
+                                <li>SWAYAM online courses</li>
+                                <li>e-Pathshala digital content</li>
+                                <li>DIKSHA platform access</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="service-content-card">
+                            <h4><i class="fas fa-briefcase"></i> Skill Development</h4>
+                            <p>Vocational training and skill certification.</p>
+                            <ul>
+                                <li>PMKVY training programs</li>
+                                <li>Free skill certification</li>
+                                <li>Job placement assistance</li>
+                                <li>Stipend during training</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-20">
+                        <h4>How to Apply for Scholarships:</h4>
+                        <ol>
+                            <li>Register on National Scholarship Portal (NSP)</li>
+                            <li>Fill application with caste and income certificates</li>
+                            <li>Upload mark sheets and admission proof</li>
+                            <li>Submit to institute for verification</li>
+                            <li>Track status on NSP portal</li>
+                        </ol>
+                    </div>
+                `
+            }
+        };
+
+        // Mock user database
+        const mockUsers = [
+            { id: 1, name: "Ramesh Kumar", email: "ramesh@example.com", mobile: "9876543210", password: "password123", age: 45, gender: "male", location: "Uttar Pradesh", occupation: "farmer" },
+            { id: 2, name: "Sunita Devi", email: "sunita@example.com", mobile: "9876543211", password: "password123", age: 32, gender: "female", location: "Bihar", occupation: "housewife" },
+            { id: 3, name: "Admin User", email: "admin@vaani.gov.in", mobile: "9876543212", password: "admin123", age: 35, gender: "male", location: "Delhi", occupation: "admin", isAdmin: true }
+        ];
+
+        // Mock scheme database
+        const schemes = [
+            {
+                id: 1,
+                name: "PM-KISAN Scheme",
+                description: "Financial support for farmers with landholding.",
+                eligibility: ["Farmers with landholding", "Age: 18+", "Indian citizen"],
+                documents: ["Aadhaar card", "Land ownership papers", "Bank account details"],
+                applySteps: ["Visit nearest CSC", "Fill Form 1", "Submit documents", "Get approval"],
+                tags: ["farmer", "financial", "above18"]
+            },
+            {
+                id: 2,
+                name: "Ayushman Bharat Yojana",
+                description: "Health insurance for low-income families.",
+                eligibility: ["Families with annual income < ₹5 lakh", "No existing health insurance", "Rural/urban poor"],
+                documents: ["Aadhaar card", "Income certificate", "Ration card"],
+                applySteps: ["Check eligibility online", "Visit empanelled hospital", "Get golden card", "Avail treatment"],
+                tags: ["healthcare", "below5", "all"]
+            },
+            {
+                id: 3,
+                name: "PM Awas Yojana",
+                description: "Housing for all by 2022.",
+                eligibility: ["Economically weaker sections", "No existing pucca house", "Woman as household head preferred"],
+                documents: ["Aadhaar card", "Income certificate", "Land documents if available"],
+                applySteps: ["Apply online or at CSC", "Get beneficiary ID", "Wait for approval", "Receive first installment"],
+                tags: ["housing", "financial", "all"]
+            },
+            {
+                id: 4,
+                name: "National Scholarship Portal",
+                description: "Scholarships for students from disadvantaged backgrounds.",
+                eligibility: ["Students from SC/ST/OBC", "Family income < ₹2.5 lakh", "Enrolled in recognized institution"],
+                documents: ["Caste certificate", "Income certificate", "Mark sheets", "Admission proof"],
+                applySteps: ["Register on NSP portal", "Fill application", "Upload documents", "Track status"],
+                tags: ["education", "student", "below18", "18-40"]
+            },
+            {
+                id: 5,
+                name: "National Social Assistance Programme",
+                description: "Pension for elderly, widows and disabled persons.",
+                eligibility: ["Age 60+ for old age", "Widows 18+", "Disabled persons 18+"],
+                documents: ["Aadhaar card", "Age proof", "Disability certificate if applicable", "Bank account"],
+                applySteps: ["Apply at block office", "Submit documents", "Get approval", "Receive monthly pension"],
+                tags: ["pension", "above60", "financial", "all"]
+            }
+        ];
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+            setupEventListeners();
+            loadNotifications();
+            updateNotificationCount();
+            
+            // Check for saved theme preference
+            const savedTheme = localStorage.getItem('vaani-theme');
+            if (savedTheme === 'dark') {
+                enableDarkMode();
+            }
+            
+            // Check for saved language preference
+            const savedLanguage = localStorage.getItem('vaani-language');
+            if (savedLanguage) {
+                switchLanguage(savedLanguage);
+            }
+        });
+
+        // Initialize app components
+        function initializeApp() {
+            // Initialize Web Speech API
+            if ('webkitSpeechRecognition' in window) {
+                recognition = new webkitSpeechRecognition();
+                recognition.continuous = false;
+                recognition.interimResults = false;
+                recognition.lang = currentLanguage === 'hi' ? 'hi-IN' : 'en-IN';
+                
+                recognition.onresult = function(event) {
+                    const transcript = event.results[0][0].transcript;
+                    document.getElementById('voiceText').textContent = transcript;
+                    processVoiceCommand(transcript);
+                    isListening = false;
+                    document.getElementById('voiceBtn').innerHTML = '<i class="fas fa-microphone"></i> Speak';
+                };
+                
+                recognition.onerror = function(event) {
+                    console.error('Speech recognition error', event.error);
+                    isListening = false;
+                    document.getElementById('voiceBtn').innerHTML = '<i class="fas fa-microphone"></i> Speak';
+                    document.getElementById('voiceText').textContent = "Error listening. Please try again.";
+                };
+                
+                recognition.onend = function() {
+                    isListening = false;
+                    document.getElementById('voiceBtn').innerHTML = '<i class="fas fa-microphone"></i> Speak';
+                };
+            } else {
+                document.getElementById('voiceBtn').disabled = true;
+                document.getElementById('voiceBtn').innerHTML = '<i class="fas fa-microphone-slash"></i> Voice Not Supported';
+                document.getElementById('voiceText').textContent = "Voice recognition is not supported in your browser. Please use Chrome or Edge.";
+            }
+            
+            // Initialize text-to-speech
+            if (!speechSynthesis) {
+                document.getElementById('readBtn').disabled = true;
+                document.getElementById('readBtn').innerHTML = '<i class="fas fa-volume-mute"></i> TTS Not Supported';
+            }
+            
+            // Load admin user data
+            loadAdminUserData();
+        }
+
+        // Set up event listeners
+        function setupEventListeners() {
+            // Logo click to home
+            document.getElementById('logoLink').addEventListener('click', function(e) {
+                e.preventDefault();
+                showSection('home');
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                document.querySelector('[data-section="home"]').classList.add('active');
+            });
+            
+            // Theme toggle
+            document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+            
+            // Language switcher
+            document.querySelectorAll('.language-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const lang = this.getAttribute('data-lang');
+                    switchLanguage(lang);
+                });
+            });
+            
+            // Navigation
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const section = this.getAttribute('data-section');
+                    showSection(section);
+                    
+                    // Update active nav link
+                    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+            
+            // Notification button in top corner
+            document.getElementById('notificationTopBtn').addEventListener('click', toggleNotifications);
+            document.getElementById('closeNotifications').addEventListener('click', toggleNotifications);
+            
+            // Login/Signup buttons
+            document.getElementById('loginBtn').addEventListener('click', showLogin);
+            document.getElementById('signupBtn').addEventListener('click', showSignup);
+            document.getElementById('showSignup').addEventListener('click', function(e) {
+                e.preventDefault();
+                showSignup();
+            });
+            
+            // Login options
+            document.getElementById('mobileLoginBtn').addEventListener('click', showMobileLogin);
+            document.getElementById('emailLoginBtn').addEventListener('click', showEmailLogin);
+            document.getElementById('sendOtpBtn').addEventListener('click', sendOtp);
+            document.getElementById('verifyOtpBtn').addEventListener('click', verifyOtp);
+            document.getElementById('emailLoginSubmitBtn').addEventListener('click', emailLogin);
+            
+            // Logout
+            document.getElementById('logoutBtn').addEventListener('click', logout);
+            document.getElementById('logoutAdminBtn').addEventListener('click', logoutAdmin);
+            
+            // Voice assistant
+            document.getElementById('voiceBtn').addEventListener('click', toggleVoiceRecognition);
+            document.getElementById('readBtn').addEventListener('click', readResponse);
+            document.getElementById('startVoiceBtn').addEventListener('click', function() {
+                showSection('voice');
+                toggleVoiceRecognition();
+            });
+            
+            // Scheme finder
+            document.querySelectorAll('.option-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const question = this.getAttribute('data-question');
+                    const answer = this.getAttribute('data-answer');
+                    
+                    // Remove active class from all buttons in this question
+                    this.parentElement.querySelectorAll('.option-btn').forEach(b => {
+                        b.classList.remove('active');
+                    });
+                    
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    // Store answer
+                    userAnswers[question] = answer;
+                });
+            });
+            
+            document.getElementById('findSchemesBtn').addEventListener('click', findSchemes);
+            
+            // View all applications
+            document.getElementById('viewAllApplications').addEventListener('click', function() {
+                showSection('schemes');
+            });
+            
+            // Service details
+            document.querySelectorAll('.view-service-details').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const service = this.closest('.service-card').getAttribute('data-service');
+                    showServiceDetails(service);
+                });
+            });
+            
+            // Close service modal
+            document.getElementById('closeServiceModal').addEventListener('click', function() {
+                document.getElementById('serviceModal').style.display = 'none';
+            });
+            
+            // Close modal when clicking outside
+            document.getElementById('serviceModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.style.display = 'none';
+                }
+            });
+            
+            // FAQ
+            document.querySelectorAll('.faq-question').forEach(question => {
+                question.addEventListener('click', function() {
+                    const answer = this.nextElementSibling;
+                    answer.style.display = answer.style.display === 'block' ? 'none' : 'block';
+                });
+            });
+            
+            document.querySelectorAll('.faq-play').forEach(playBtn => {
+                playBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const questionNum = this.getAttribute('data-question');
+                    readFaqAnswer(questionNum);
+                });
+            });
+            
+            // Admin
+            document.getElementById('refreshAdminData').addEventListener('click', loadAdminUserData);
+            
+            // Enter key for voice input
+            document.getElementById('voiceInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    processTextCommand(this.value);
+                    this.value = '';
+                }
+            });
+            
+            // Admin login (hardcoded credentials)
+            document.addEventListener('keypress', function(e) {
+                // Secret admin login shortcut: Ctrl+Alt+A
+                if (e.ctrlKey && e.altKey && e.key === 'a') {
+                    showAdminLoginPrompt();
+                }
+            });
+        }
+
+        // Theme functions
+        function toggleTheme() {
+            if (isDarkMode) {
+                disableDarkMode();
+            } else {
+                enableDarkMode();
+            }
+        }
+
+        function enableDarkMode() {
+            document.body.classList.add('dark-mode');
+            document.getElementById('themeToggle').innerHTML = '<i class="fas fa-sun"></i>';
+            isDarkMode = true;
+            localStorage.setItem('vaani-theme', 'dark');
+        }
+
+        function disableDarkMode() {
+            document.body.classList.remove('dark-mode');
+            document.getElementById('themeToggle').innerHTML = '<i class="fas fa-moon"></i>';
+            isDarkMode = false;
+            localStorage.setItem('vaani-theme', 'light');
+        }
+
+        // Language functions
+        function switchLanguage(lang) {
+            currentLanguage = lang;
+            document.getElementById('currentLanguage').textContent = lang === 'en' ? 'English' : 'हिंदी';
+            
+            if (recognition) {
+                recognition.lang = lang === 'hi' ? 'hi-IN' : 'en-IN';
+            }
+            
+            // Update UI texts based on language
+            updateUITexts(lang);
+            
+            localStorage.setItem('vaani-language', lang);
+        }
+
+        function updateUITexts(lang) {
+            // This function updates all text on the page based on language
+            // For now, we'll just update a few key elements
+            if (lang === 'hi') {
+                document.getElementById('voiceInput').placeholder = "अपना प्रश्न टाइप करें या बोलने के लिए माइक्रोफोन पर क्लिक करें...";
+                document.querySelector('.hero-subtitle').textContent = "ग्रामीण भारत के लिए समावेशी, बहुभाषी, कम-बैंडविड्थ डिजिटल पहुंच";
+                document.getElementById('notificationTopBtn').querySelector('i').nextSibling.textContent = "3";
+            } else {
+                document.getElementById('voiceInput').placeholder = "Type your query or click the microphone to speak...";
+                document.querySelector('.hero-subtitle').textContent = "Inclusive, Multilingual, Low-Bandwidth Digital Access for Rural India";
+                document.getElementById('notificationTopBtn').querySelector('i').nextSibling.textContent = "3";
+            }
+        }
+
+        // Section navigation
+        function showSection(section) {
+            // Hide all sections
+            document.querySelectorAll('.hero, .voice-section, .login-section, .dashboard-section, .scheme-finder, .services-section, .help-section, .admin-section').forEach(sec => {
+                sec.style.display = 'none';
+            });
+            
+            // Show selected section
+            if (section === 'home') {
+                document.querySelector('.hero').style.display = 'block';
+                document.querySelector('.hero').scrollIntoView({ behavior: 'smooth' });
+            } else if (section === 'voice') {
+                document.getElementById('voice').style.display = 'block';
+            } else if (section === 'schemes') {
+                document.getElementById('schemes').style.display = 'block';
+            } else if (section === 'services') {
+                document.querySelector('.services-section').style.display = 'block';
+            } else if (section === 'help') {
+                document.getElementById('help').style.display = 'block';
+            } else if (section === 'admin') {
+                if (isAdminLoggedIn) {
+                    document.getElementById('admin').style.display = 'block';
+                } else {
+                    showAdminLoginPrompt();
+                }
+            }
+            
+            // Scroll to section
+            if (section !== 'home') {
+                setTimeout(() => {
+                    const element = document.getElementById(section) || document.querySelector(`.${section}`);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }, 100);
+            }
+        }
+
+        // Login/Signup functions
+        function showLogin() {
+            document.getElementById('loginSection').style.display = 'block';
+            document.querySelector('.hero').style.display = 'none';
+            document.getElementById('voice').style.display = 'none';
+            hideEmailForm();
+            hideMobileForm();
+        }
+
+        function showSignup() {
+            showLogin();
+            // In a real app, this would show signup form
+            alert("Signup form would appear here. For demo, use login with:\nEmail: ramesh@example.com\nPassword: password123\n\nOr use mobile OTP with any 10-digit number.");
+        }
+
+        function showMobileLogin() {
+            document.getElementById('mobileForm').style.display = 'block';
+            document.getElementById('emailForm').style.display = 'none';
+        }
+
+        function showEmailLogin() {
+            document.getElementById('emailForm').style.display = 'block';
+            document.getElementById('mobileForm').style.display = 'none';
+        }
+
+        function hideMobileForm() {
+            document.getElementById('mobileForm').style.display = 'none';
+        }
+
+        function hideEmailForm() {
+            document.getElementById('emailForm').style.display = 'none';
+        }
+
+        function sendOtp() {
+            const mobile = document.getElementById('mobileNumber').value;
+            if (mobile.length === 10) {
+                // Mock OTP sending
+                alert(`OTP sent to ${mobile}. For demo, use OTP: 123456`);
+                
+                // Focus on first OTP input
+                document.getElementById('otp1').focus();
+            } else {
+                alert("Please enter a valid 10-digit mobile number");
+            }
+        }
+
+        function verifyOtp() {
+            // Mock OTP verification
+            const otp = document.getElementById('otp1').value +
+                       document.getElementById('otp2').value +
+                       document.getElementById('otp3').value +
+                       document.getElementById('otp4').value +
+                       document.getElementById('otp5').value +
+                       document.getElementById('otp6').value;
+            
+            if (otp === '123456') {
+                // Successful login
+                const mobile = document.getElementById('mobileNumber').value;
+                const user = mockUsers.find(u => u.mobile === mobile) || 
+                            { id: 100, name: "Mobile User", email: "mobile@user.com", mobile: mobile, age: 30, gender: "prefer not to say", location: "Not specified", occupation: "general" };
+                
+                loginUser(user);
+            } else {
+                alert("Invalid OTP. Please try again.");
+            }
+        }
+
+        function emailLogin() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // Check for admin credentials
+            if (email === "Yashwant25" && password === "Bksingh8732108@") {
+                // Admin login
+                isAdminLoggedIn = true;
+                isLoggedIn = true;
+                userData = { name: "Admin Yashwant", email: "admin@vaani.gov.in", isAdmin: true };
+                
+                // Show admin section
+                document.getElementById('loginSection').style.display = 'none';
+                document.getElementById('admin').style.display = 'block';
+                document.querySelector('.hero').style.display = 'block';
+                
+                // Update login button
+                document.getElementById('loginBtn').style.display = 'none';
+                document.getElementById('signupBtn').style.display = 'none';
+                
+                // Add admin badge
+                const navButtons = document.querySelector('.nav-buttons');
+                const adminBadge = document.createElement('div');
+                adminBadge.className = 'feature-badge';
+                adminBadge.innerHTML = '<i class="fas fa-user-shield"></i> Admin';
+                navButtons.prepend(adminBadge);
+                
+                alert("Admin login successful!");
+                return;
+            }
+            
+            // Regular user login
+            const user = mockUsers.find(u => u.email === email && u.password === password);
+            
+            if (user) {
+                loginUser(user);
+            } else {
+                alert("Invalid email or password. Try:\nEmail: ramesh@example.com\nPassword: password123");
+            }
+        }
+
+        function loginUser(user) {
+            userData = user;
+            isLoggedIn = true;
+            
+            // Update UI
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('dashboardSection').style.display = 'block';
+            document.querySelector('.hero').style.display = 'none';
+            
+            // Update user info
+            document.getElementById('userName').textContent = user.name;
+            document.getElementById('userAvatar').textContent = user.name.charAt(0);
+            document.getElementById('userLocation').textContent = `Location: ${user.location}`;
+            
+            // Update stats
+            document.getElementById('schemeCount').textContent = Math.floor(Math.random() * 5) + 1;
+            document.getElementById('voiceQueries').textContent = Math.floor(Math.random() * 20) + 5;
+            document.getElementById('servicesUsed').textContent = Math.floor(Math.random() * 10) + 1;
+            document.getElementById('appliedSchemes').textContent = appliedSchemes.length;
+            
+            // Load user applications
+            loadUserApplications();
+            
+            // Load applied schemes
+            loadAppliedSchemes();
+            
+            // Update login button
+            document.getElementById('loginBtn').style.display = 'none';
+            document.getElementById('signupBtn').style.display = 'none';
+            
+            // Add notification
+            addNotification("Welcome to VAANI", `Welcome back, ${user.name}! We're here to help you access government services.`);
+            
+            alert(`Login successful! Welcome ${user.name}`);
+        }
+
+        function logout() {
+            userData = null;
+            isLoggedIn = false;
+            isAdminLoggedIn = false;
+            
+            // Update UI
+            document.getElementById('dashboardSection').style.display = 'none';
+            document.getElementById('admin').style.display = 'none';
+            document.getElementById('loginSection').style.display = 'none';
+            document.querySelector('.hero').style.display = 'block';
+            document.getElementById('loginBtn').style.display = 'inline-block';
+            document.getElementById('signupBtn').style.display = 'inline-block';
+            
+            // Reset scheme finder
+            userAnswers = {};
+            document.querySelectorAll('.option-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById('schemeResults').innerHTML = '';
+            
+            // Remove admin badge if exists
+            const adminBadge = document.querySelector('.nav-buttons .feature-badge');
+            if (adminBadge) {
+                adminBadge.remove();
+            }
+            
+            // Navigate to home
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            document.querySelector('[data-section="home"]').classList.add('active');
+            
+            alert("Logged out successfully");
+        }
+
+        function logoutAdmin() {
+            isAdminLoggedIn = false;
+            logout();
+        }
+
+        function showAdminLoginPrompt() {
+            const password = prompt("Enter admin password:");
+            if (password === "Bksingh8732108@") {
+                // Auto login as admin
+                document.getElementById('email').value = "Yashwant25";
+                document.getElementById('password').value = "Bksingh8732108@";
+                emailLogin();
+            } else if (password) {
+                alert("Invalid admin password");
+            }
+        }
+
+        // Voice assistant functions with enhanced results
+        function toggleVoiceRecognition() {
+            if (!recognition) {
+                alert("Voice recognition is not supported in your browser. Please use Chrome or Edge.");
+                return;
+            }
+            
+            if (isListening) {
+                recognition.stop();
+                isListening = false;
+                document.getElementById('voiceBtn').innerHTML = '<i class="fas fa-microphone"></i> Speak';
+            } else {
+                recognition.start();
+                isListening = true;
+                document.getElementById('voiceBtn').innerHTML = '<i class="fas fa-microphone"></i> Listening...';
+                document.getElementById('voiceText').textContent = "Listening... Speak now.";
+                document.getElementById('voiceText').classList.add('listening');
+            }
+        }
+
+        function processVoiceCommand(transcript) {
+            document.getElementById('voiceText').classList.remove('listening');
+            processTextCommand(transcript);
+        }
+
+        function processTextCommand(command) {
+            let response = "";
+            let resultsHTML = "";
+            
+            // Convert command to lowercase for easier matching
+            const cmd = command.toLowerCase();
+            
+            // Process different command types
+            if (cmd.includes("scheme") || cmd.includes("yojana") || cmd.includes("sarkari") || cmd.includes("government")) {
+                response = "I found these government schemes for you:";
+                resultsHTML = displayVoiceResults(schemes.slice(0, 3));
+                // Auto-scroll to scheme finder
+                setTimeout(() => {
+                    showSection('schemes');
+                }, 1000);
+            } else if (cmd.includes("health") || cmd.includes("doctor") || cmd.includes("hospital") || cmd.includes("medical")) {
+                response = "Here are healthcare services available:";
+                const healthcareSchemes = schemes.filter(s => s.tags.includes("healthcare"));
+                resultsHTML = displayVoiceResults(healthcareSchemes);
+            } else if (cmd.includes("pension") || cmd.includes("retirement") || cmd.includes("old age")) {
+                response = "Here are pension schemes available:";
+                const pensionSchemes = schemes.filter(s => s.tags.includes("pension"));
+                resultsHTML = displayVoiceResults(pensionSchemes);
+            } else if (cmd.includes("education") || cmd.includes("scholarship") || cmd.includes("student")) {
+                response = "Here are education schemes available:";
+                const educationSchemes = schemes.filter(s => s.tags.includes("education"));
+                resultsHTML = displayVoiceResults(educationSchemes);
+            } else if (cmd.includes("ration") || cmd.includes("food") || cmd.includes("anna")) {
+                response = "For ration and food distribution information, please check the Essential Services section.";
+                setTimeout(() => {
+                    showSection('services');
+                }, 1000);
+            } else if (cmd.includes("login") || cmd.includes("sign up") || cmd.includes("account")) {
+                response = "To login or create an account, please click the login button at the top right.";
+                setTimeout(() => {
+                    showLogin();
+                }, 1000);
+            } else if (cmd.includes("help") || cmd.includes("guidance") || cmd.includes("madad")) {
+                response = "For help and guidance, please visit the 'Help & Guidance' section.";
+                setTimeout(() => {
+                    showSection('help');
+                }, 1000);
+            } else if (cmd.includes("hello") || cmd.includes("hi") || cmd.includes("namaste")) {
+                response = "Hello! I'm VAANI, your voice assistant. How can I help you access government services today?";
+            } else {
+                response = "I understand you said: '" + command + "'. I can help you with government schemes, healthcare, ration, pension, education, and other essential services. Please try asking about any of these services.";
+            }
+            
+            // Display response
+            document.getElementById('responseText').textContent = response;
+            
+            // Display results if any
+            const resultsDisplay = document.getElementById('voiceResultsDisplay');
+            if (resultsHTML) {
+                resultsDisplay.innerHTML = resultsHTML;
+                resultsDisplay.style.display = 'grid';
+            } else {
+                resultsDisplay.innerHTML = '';
+                resultsDisplay.style.display = 'none';
+            }
+            
+            // If user is logged in, personalize response
+            if (userData) {
+                response = `Hello ${userData.name}! ` + response;
+            }
+        }
+
+        function displayVoiceResults(schemes) {
+            if (schemes.length === 0) {
+                return '<div class="voice-result-card"><p>No results found. Please try different keywords.</p></div>';
+            }
+            
+            let html = '';
+            schemes.forEach(scheme => {
+                html += `
+                    <div class="voice-result-card">
+                        <h4>${scheme.name}</h4>
+                        <p>${scheme.description}</p>
+                        <div class="mt-20">
+                            <button class="btn btn-outline btn-sm" onclick="applyForScheme(${scheme.id})">
+                                <i class="fas fa-file-alt"></i>
+                                Apply Now
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            return html;
+        }
+
+        function applyForScheme(schemeId) {
+            if (!isLoggedIn) {
+                alert("Please login to apply for schemes.");
+                showLogin();
+                return;
+            }
+            
+            const scheme = schemes.find(s => s.id === schemeId);
+            if (scheme) {
+                // Check if already applied
+                const alreadyApplied = appliedSchemes.find(s => s.id === schemeId);
+                if (alreadyApplied) {
+                    alert(`You have already applied for ${scheme.name}. Check your applications tracker.`);
+                    return;
+                }
+                
+                // Add to applied schemes
+                const newAppliedScheme = {
+                    id: schemeId,
+                    name: scheme.name,
+                    appliedDate: new Date().toISOString().split('T')[0],
+                    status: "Pending",
+                    amount: "To be determined",
+                    nextStep: "Document verification"
+                };
+                
+                appliedSchemes.push(newAppliedScheme);
+                
+                // Add to applications tracker
+                const newApplication = {
+                    id: userApplications.length + 1,
+                    schemeId: schemeId,
+                    schemeName: scheme.name,
+                    appliedDate: new Date().toISOString().split('T')[0],
+                    status: "pending",
+                    lastUpdate: new Date().toISOString().split('T')[0],
+                    documents: ["Aadhaar Card", "Income Certificate"],
+                    trackingId: "VAANI" + Date.now().toString().slice(-6)
+                };
+                
+                userApplications.push(newApplication);
+                
+                // Update dashboard
+                document.getElementById('appliedSchemes').textContent = appliedSchemes.length;
+                
+                // Reload applications
+                if (document.getElementById('dashboardSection').style.display === 'block') {
+                    loadUserApplications();
+                    loadAppliedSchemes();
+                }
+                
+                alert(`Successfully applied for ${scheme.name}! Your application tracking ID is ${newApplication.trackingId}`);
+                
+                // Add notification
+                addNotification("Scheme Application Submitted", `Your application for ${scheme.name} has been submitted. Tracking ID: ${newApplication.trackingId}`);
+            }
+        }
+
+        function readResponse() {
+            if (!speechSynthesis) {
+                alert("Text-to-speech is not supported in your browser.");
+                return;
+            }
+            
+            const responseText = document.getElementById('responseText').textContent;
+            const utterance = new SpeechSynthesisUtterance(responseText);
+            
+            // Set language based on current selection
+            utterance.lang = currentLanguage === 'hi' ? 'hi-IN' : 'en-IN';
+            
+            // Set voice properties
+            utterance.rate = 0.9;
+            utterance.pitch = 1;
+            utterance.volume = 1;
+            
+            speechSynthesis.speak(utterance);
+        }
+
+        function readFaqAnswer(questionNum) {
+            const faqAnswers = [
+                "VAANI works with minimal internet. Basic features are available offline, and we use low-bandwidth technology to ensure accessibility even with poor connectivity.",
+                "Yes, we follow strict privacy guidelines. We collect minimal data and never share it without your consent. All data is encrypted and stored securely.",
+                "Currently, VAANI supports Hindi and English. We are working to add more Indian languages soon, including Tamil, Telugu, Marathi, Bengali, and Gujarati."
+            ];
+            
+            const answerText = faqAnswers[questionNum - 1];
+            const utterance = new SpeechSynthesisUtterance(answerText);
+            utterance.lang = currentLanguage === 'hi' ? 'hi-IN' : 'en-IN';
+            utterance.rate = 0.9;
+            speechSynthesis.speak(utterance);
+        }
+
+        // Scheme finder functions
+        function findSchemes() {
+            // Check if user has answered questions
+            if (Object.keys(userAnswers).length < 4) {
+                alert("Please answer all questions to find eligible schemes.");
+                return;
+            }
+            
+            // Find matching schemes based on user answers
+            const eligibleSchemes = schemes.filter(scheme => {
+                // Check if scheme tags match user profile
+                const userProfile = {
+                    age: userAnswers.age,
+                    occupation: userAnswers.occupation,
+                    income: userAnswers.income,
+                    assistance: userAnswers.assistance
+                };
+                
+                // Simple matching logic
+                let matches = 0;
+                
+                // Age matching
+                if (scheme.tags.includes(userProfile.age) || scheme.tags.includes('all')) {
+                    matches++;
+                }
+                
+                // Occupation matching (if scheme has specific occupation tags)
+                if (scheme.tags.includes(userProfile.occupation) || !['farmer', 'student'].includes(userProfile.occupation)) {
+                    matches++;
+                }
+                
+                // Income matching
+                if (userProfile.income === 'below1' || userProfile.income === '1-3') {
+                    // Most schemes target lower income groups
+                    matches++;
+                }
+                
+                // Assistance type matching
+                if (scheme.tags.includes(userProfile.assistance) || scheme.tags.includes('financial')) {
+                    matches++;
+                }
+                
+                return matches >= 2; // At least 2 matches
+            });
+            
+            // Display results
+            displaySchemeResults(eligibleSchemes);
+        }
+
+        function displaySchemeResults(schemes) {
+            const resultsContainer = document.getElementById('schemeResults');
+            
+            if (schemes.length === 0) {
+                resultsContainer.innerHTML = `
+                    <div class="scheme-card">
+                        <h3 class="scheme-title">No Schemes Found</h3>
+                        <p class="scheme-desc">Based on your answers, we couldn't find matching schemes. Try adjusting your answers or visit a Common Service Center for personalized assistance.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let resultsHTML = '';
+            
+            schemes.forEach(scheme => {
+                // Check if already applied
+                const isApplied = appliedSchemes.find(s => s.id === scheme.id);
+                
+                resultsHTML += `
+                    <div class="scheme-card">
+                        <h3 class="scheme-title">${scheme.name}</h3>
+                        <p class="scheme-desc">${scheme.description}</p>
+                        
+                        <div class="scheme-details">
+                            <div class="detail-item">
+                                <span class="detail-label">Eligibility:</span>
+                                <span class="detail-value">${scheme.eligibility.join(', ')}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Documents Needed:</span>
+                                <span class="detail-value">${scheme.documents.join(', ')}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">How to Apply:</span>
+                                <span class="detail-value">${scheme.applySteps.join(' → ')}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-20">
+                            ${isApplied ? 
+                                `<button class="btn btn-outline" disabled>
+                                    <i class="fas fa-check"></i>
+                                    Already Applied
+                                </button>` :
+                                `<button class="btn btn-primary" onclick="applyForScheme(${scheme.id})">
+                                    <i class="fas fa-file-alt"></i>
+                                    Apply Now
+                                </button>
+                                <button class="btn btn-outline" onclick="saveSchemeInterest(${scheme.id})">
+                                    <i class="fas fa-bookmark"></i>
+                                    Save for Later
+                                </button>`
+                            }
+                        </div>
+                    </div>
+                `;
+            });
+            
+            resultsContainer.innerHTML = resultsHTML;
+            
+            // Scroll to results
+            setTimeout(() => {
+                resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 300);
+        }
+
+        function saveSchemeInterest(schemeId) {
+            if (!isLoggedIn) {
+                alert("Please login to save schemes.");
+                showLogin();
+                return;
+            }
+            
+            alert(`Scheme saved to your interests. You can find it in your dashboard.`);
+            addNotification("Scheme Saved", "You've saved a scheme for later viewing. Check your dashboard.");
+        }
+
+        // Load user applications
+        function loadUserApplications() {
+            const applicationsGrid = document.getElementById('applicationsGrid');
+            applicationsGrid.innerHTML = '';
+            
+            if (userApplications.length === 0) {
+                applicationsGrid.innerHTML = `
+                    <div class="application-card">
+                        <p>No applications yet. Apply for schemes to track your applications here.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            userApplications.forEach(app => {
+                let statusClass = '';
+                let statusText = '';
+                
+                switch(app.status) {
+                    case 'pending':
+                        statusClass = 'status-pending';
+                        statusText = 'Pending';
+                        break;
+                    case 'approved':
+                        statusClass = 'status-approved';
+                        statusText = 'Approved';
+                        break;
+                    case 'rejected':
+                        statusClass = 'status-rejected';
+                        statusText = 'Rejected';
+                        break;
+                    case 'inprogress':
+                        statusClass = 'status-inprogress';
+                        statusText = 'In Progress';
+                        break;
+                }
+                
+                applicationsGrid.innerHTML += `
+                    <div class="application-card">
+                        <div class="application-status ${statusClass}">${statusText}</div>
+                        <h4>${app.schemeName}</h4>
+                        <div class="detail-item">
+                            <span class="detail-label">Applied:</span>
+                            <span class="detail-value">${app.appliedDate}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Tracking ID:</span>
+                            <span class="detail-value">${app.trackingId}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Last Update:</span>
+                            <span class="detail-value">${app.lastUpdate}</span>
+                        </div>
+                        <button class="btn btn-outline btn-sm mt-10" onclick="viewApplicationDetails(${app.id})">
+                            <i class="fas fa-eye"></i>
+                            View Details
+                        </button>
+                    </div>
+                `;
+            });
+        }
+
+        function viewApplicationDetails(appId) {
+            const app = userApplications.find(a => a.id === appId);
+            if (app) {
+                alert(`Application Details:\n\nScheme: ${app.schemeName}\nStatus: ${app.status}\nTracking ID: ${app.trackingId}\nApplied Date: ${app.appliedDate}\nLast Update: ${app.lastUpdate}\n\nRequired Documents:\n${app.documents.join('\n')}`);
+            }
+        }
+
+        // Load applied schemes
+        function loadAppliedSchemes() {
+            const appliedGrid = document.getElementById('appliedSchemesGrid');
+            appliedGrid.innerHTML = '';
+            
+            if (appliedSchemes.length === 0) {
+                appliedGrid.innerHTML = `
+                    <div class="scheme-card">
+                        <h3 class="scheme-title">No Applied Schemes</h3>
+                        <p class="scheme-desc">You haven't applied for any schemes yet. Use the Scheme Finder to discover and apply for government schemes.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            appliedSchemes.forEach(scheme => {
+                appliedGrid.innerHTML += `
+                    <div class="scheme-card">
+                        <h3 class="scheme-title">${scheme.name}</h3>
+                        <div class="detail-item">
+                            <span class="detail-label">Applied Date:</span>
+                            <span class="detail-value">${scheme.appliedDate}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Status:</span>
+                            <span class="detail-value">${scheme.status}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Estimated Amount:</span>
+                            <span class="detail-value">${scheme.amount}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Next Step:</span>
+                            <span class="detail-value">${scheme.nextStep}</span>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // Service details modal
+        function showServiceDetails(service) {
+            const modal = document.getElementById('serviceModal');
+            const content = serviceContent[service];
+            
+            if (content) {
+                document.getElementById('serviceModalTitle').textContent = content.title;
+                document.getElementById('serviceModalContent').innerHTML = content.content;
+                modal.style.display = 'block';
+            }
+        }
+
+        // Notification functions
+        function loadNotifications() {
+            const notificationBody = document.getElementById('notificationBody');
+            notificationBody.innerHTML = '';
+            
+            notifications.forEach(notification => {
+                const notificationElement = document.createElement('div');
+                notificationElement.className = `notification-item ${notification.read ? 'read' : 'unread'}`;
+                notificationElement.innerHTML = `
+                    <div class="notification-title">${notification.title}</div>
+                    <div class="notification-text">${notification.text}</div>
+                    <div class="notification-time">${notification.time}</div>
+                `;
+                
+                notificationElement.addEventListener('click', () => {
+                    notification.read = true;
+                    updateNotificationCount();
+                    loadNotifications();
+                });
+                
+                notificationBody.appendChild(notificationElement);
+            });
+        }
+
+        function updateNotificationCount() {
+            const unreadCount = notifications.filter(n => !n.read).length;
+            document.getElementById('notificationCount').textContent = unreadCount;
+            document.getElementById('notificationBadge').textContent = unreadCount;
+            
+            if (isLoggedIn) {
+                document.getElementById('notifCount').textContent = unreadCount;
+            }
+        }
+
+        function toggleNotifications() {
+            const panel = document.getElementById('notificationPanel');
+            panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+            
+            // Mark all as read when opening
+            if (panel.style.display === 'block') {
+                notifications.forEach(n => n.read = true);
+                updateNotificationCount();
+                loadNotifications();
+            }
+        }
+
+        function addNotification(title, text) {
+            const newNotification = {
+                id: notifications.length + 1,
+                title: title,
+                text: text,
+                time: "Just now",
+                read: false
+            };
+            
+            notifications.unshift(newNotification);
+            updateNotificationCount();
+            loadNotifications();
+        }
+
+        // Admin functions
+        function loadAdminUserData() {
+            const tableBody = document.getElementById('adminUserTable');
+            tableBody.innerHTML = '';
+            
+            // Add mock users to table
+            mockUsers.forEach(user => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${user.id}</td>
+                    <td>${user.name} ${user.isAdmin ? '<span class="feature-badge" style="padding:2px 8px;font-size:12px;">Admin</span>' : ''}</td>
+                    <td>${user.location}</td>
+                    <td>${Math.floor(Math.random() * 24)} hours ago</td>
+                    <td>
+                        <button class="btn btn-outline" style="padding:5px 10px;font-size:12px;">View</button>
+                        <button class="btn btn-outline" style="padding:5px 10px;font-size:12px;">Edit</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+            
+            // Add some additional mock users
+            for (let i = 4; i <= 10; i++) {
+                const locations = ["Uttar Pradesh", "Bihar", "Madhya Pradesh", "Rajasthan", "Maharashtra", "West Bengal"];
+                const names = ["Raju", "Geeta", "Amit", "Priya", "Suresh", "Laxmi", "Vikram", "Anjali"];
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${100 + i}</td>
+                    <td>${names[i-4]} ${Math.floor(Math.random() * 100)}</td>
+                    <td>${locations[Math.floor(Math.random() * locations.length)]}</td>
+                    <td>${Math.floor(Math.random() * 48)} hours ago</td>
+                    <td>
+                        <button class="btn btn-outline" style="padding:5px 10px;font-size:12px;">View</button>
+                        <button class="btn btn-outline" style="padding:5px 10px;font-size:12px;">Edit</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            }
+        }
+
+        // Make functions available globally
+        window.saveSchemeInterest = saveSchemeInterest;
+        window.showSection = showSection;
+        window.applyForScheme = applyForScheme;
+        window.viewApplicationDetails = viewApplicationDetails;
+    </script>
+</body>
+</html>
